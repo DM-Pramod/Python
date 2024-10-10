@@ -1,0 +1,12 @@
+{
+    "nodes": [
+        {"id": 1, "label": "Node 1", "title": "Node 1 details"},
+        {"id": 2, "label": "Node 2", "title": "Node 2 details"},
+        {"id": 3, "label": "Node 3", "title": "Node 3 details"}
+    ],
+    "edges": [
+        {"from": 1, "to": 2},
+        {"from": 1, "to": 3},
+        {"from": 2, "to": 3}
+    ]
+}
