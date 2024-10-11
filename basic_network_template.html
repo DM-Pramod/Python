@@ -11,11 +11,11 @@
     .tooltip-table {
       border-collapse: collapse;
       width: 100%; /* Use relative width */
-      font-size: 2vw; /* Increase font size relative to viewport width */
+      font-size: 1vw; /* Reduce font size to half */
     }
     .tooltip-table th, .tooltip-table td {
       border: 1px solid black;
-      padding: 1vw; /* Use relative padding */
+      padding: 0.5vw; /* Reduce padding to half */
       text-align: left;
     }
     .tooltip-table th {
@@ -25,11 +25,11 @@
       position: absolute;
       background-color: white;
       border: 1px solid black;
-      padding: 1vw; /* Use relative padding */
+      padding: 0.5vw; /* Reduce padding to half */
       z-index: 1000;
       max-width: 300px; /* Ensure tooltip doesn't exceed screen width */
       word-wrap: break-word; /* Ensure long text wraps */
-      font-size: 2vw; /* Increase font size relative to viewport width */
+      font-size: 1vw; /* Reduce font size to half */
     }
   </style>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
