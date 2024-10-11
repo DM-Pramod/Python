@@ -10,11 +10,11 @@
     }
     .tooltip-table {
       border-collapse: collapse;
-      width: 200%; /* Double the width */
+      width: 300px; /* Fixed width for better visibility */
     }
     .tooltip-table th, .tooltip-table td {
       border: 1px solid black;
-      padding: 10px; /* Increased padding */
+      padding: 10px; /* Proper padding */
       text-align: left;
     }
     .tooltip-table th {
@@ -24,8 +24,10 @@
       position: absolute;
       background-color: white;
       border: 1px solid black;
-      padding: 20px; /* Increased padding */
+      padding: 10px; /* Proper padding */
       z-index: 1000;
+      max-width: 300px; /* Ensure tooltip doesn't exceed screen width */
+      word-wrap: break-word; /* Ensure long text wraps */
     }
   </style>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
