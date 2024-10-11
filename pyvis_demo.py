@@ -26,7 +26,7 @@ class Visual():
                     type = 'source'
                 elif node.type == 'term_sink':
                     type = 'sink'
-    
+
                 G.add_node(
                     node.node_id,
                     shape="dot",
@@ -36,6 +36,22 @@ class Visual():
                         if type != "out-charters"
                         else self.config.COLOR_OUT_CHARTERS[type]
                     ),
+                    title=f"""
+                        <table style="width:100%; border-collapse: collapse;">
+                            <tr>
+                                <th style="text-align: left; padding: 5px;">Type</th>
+                                <th style="text-align: left; padding: 5px;">Node ID</th>
+                                <th style="text-align: left; padding: 5px;">From</th>
+                                <th style="text-align: left; padding: 5px;">To</th>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left; padding: 5px;">{node.type}</td>
+                                <td style="text-align: left; padding: 5px;">{node.node_id}</td>
+                                <td style="text-align: left; padding: 5px;">{node.window_start}</td>
+                                <td style="text-align: left; padding: 5px;">{node.window_end}</td>
+                            </tr>
+                        </table>
+                    """,
                 )
 
                 self.nds.append({"type":node.type, "id":node.node_id,"From":node.window_start, "To":node.window_end})
@@ -50,7 +66,23 @@ class Visual():
                         arc.dwnstr.node_id,
                         (arc.arc_upstr_window_start, arc.arc_upstr_window_end, arc.arc_dwnstr_window_start, arc.arc_dwnstr_window_end),
                         # (arc.laden_days,arc.ballast_days,arc.waiting_days,arc.port_days)
-                    ),                   
+                    ),
+                    title=f"""
+                        <table style="width:100%; border-collapse: collapse;">
+                            <tr>
+                                <th style="text-align: left; padding: 5px;">Vessel</th>
+                                <th style="text-align: left; padding: 5px;">Next Node ID</th>
+                                <th style="text-align: left; padding: 5px;">From Node ID</th>
+                                <th style="text-align: left; padding: 5px;">Days</th>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left; padding: 5px;">{vn}</td>
+                                <td style="text-align: left; padding: 5px;">{arc.upstr.node_id}</td>
+                                <td style="text-align: left; padding: 5px;">{arc.dwnstr.node_id}</td>
+                                <td style="text-align: left; padding: 5px;">{arc.arc_upstr_window_start}, {arc.arc_upstr_window_end}, {arc.arc_dwnstr_window_start}, {arc.arc_dwnstr_window_end}</td>
+                            </tr>
+                        </table>
+                    """,
                 )
             #******************************
                 self.eds.append({"Vessel":vn,
@@ -58,11 +90,8 @@ class Visual():
                         "From_NodeID":arc.dwnstr.node_id,
                         "DAYS":(arc.arc_upstr_window_start, arc.arc_upstr_window_end, arc.arc_dwnstr_window_start, arc.arc_dwnstr_window_end)},)
             # print("**************")
-            print((self.nds))
-            print(self.eds )
-            Visual.setup_template_environment(self)
-            Visual.render_and_save_html(self)
-            #*********************************
+
+
             G.repulsion(node_distance=200, spring_length=200)
             if file_name:
                 path = "{}/visual/" + file_name + ".html"
@@ -71,26 +100,3 @@ class Visual():
             G.show(
                 path.format(self.config.CASENAME, vn, v)
             )
-
-    def setup_template_environment(self):
-
-        template_dir = "outputs/Best_best_base_plan05Jul20245_test/input/"
-        try:
-            self.template_env = Environment(loader=FileSystemLoader(template_dir))
-            self.template = self.template_env.get_template('basic_network_template.html')
-            print("Template loaded successfully")
-        except Exception as e:
-            print(f"An error occurred while loading the template: {e}")
-
-    def render_and_save_html(self):
-        
-        nds_json = json.dumps(self.nds)
-        eds_json = json.dumps(self.eds)
-        oppath = "outputs/Best_best_base_plan05Jul20245_test//visual/new_nwk.html"
-        try:
-            html = self.template.render(nodes=nds_json, edges=eds_json)
-            with open(oppath, "w+") as f:
-                f.write(html)
-            print(f"Network visualization saved to {oppath}")
-        except Exception as e:
-            print(f"An error occurred while saving the network visualization: {e}")
