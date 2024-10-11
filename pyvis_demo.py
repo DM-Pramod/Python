@@ -1,11 +1,38 @@
+def generate_node_html(node):
+    return f"""
+    <html>
+    <head></head>
+    <body>
+        <table>
+            <tr><th>Type</th><td>{node.type}</td></tr>
+            <tr><th>Node ID</th><td>{node.node_id}</td></tr>
+            <tr><th>From</th><td>{node.window_start}</td></tr>
+            <tr><th>To</th><td>{node.window_end}</td></tr>
+        </table>
+    </body>
+    </html>
+    """
+
+def generate_edge_html(vn, arc):
+    return f"""
+    <html>
+    <head></head>
+    <body>
+        <table>
+            <tr><th>Vessel</th><td>{vn}</td></tr>
+            <tr><th>Next Node ID</th><td>{arc.upstr.node_id}</td></tr>
+            <tr><th>From Node ID</th><td>{arc.dwnstr.node_id}</td></tr>
+            <tr><th>Days</th><td>{arc.arc_upstr_window_start}, {arc.arc_upstr_window_end}, {arc.arc_dwnstr_window_start}, {arc.arc_dwnstr_window_end}</td></tr>
+        </table>
+    </body>
+    </html>
+    """
+
+
 from pyvis.network import Network as GNetwork
-
 import json
-
 from jinja2 import Environment, FileSystemLoader
-
 from config import Config 
-
 
 class Visual():
 
@@ -42,14 +69,7 @@ class Visual():
                         if type != "out-charters"
                         else self.config.COLOR_OUT_CHARTERS[type]
                     ),
-                    title=f"""
-                    <table>
-                        <tr><th>Type</th><td>{node.type}</td></tr>
-                        <tr><th>Node ID</th><td>{node.node_id}</td></tr>
-                        <tr><th>From</th><td>{node.window_start}</td></tr>
-                        <tr><th>To</th><td>{node.window_end}</td></tr>
-                    </table>
-                    """,
+                    title=generate_node_html(node),
                 )
 
                 self.nds.append({"type": node.type, "id": node.node_id, "From": node.window_start, "To": node.window_end})
@@ -64,14 +84,7 @@ class Visual():
                         arc.dwnstr.node_id,
                         (arc.arc_upstr_window_start, arc.arc_upstr_window_end, arc.arc_dwnstr_window_start, arc.arc_dwnstr_window_end),
                     ),
-                    title=f"""
-                    <table>
-                        <tr><th>Vessel</th><td>{vn}</td></tr>
-                        <tr><th>Next Node ID</th><td>{arc.upstr.node_id}</td></tr>
-                        <tr><th>From Node ID</th><td>{arc.dwnstr.node_id}</td></tr>
-                        <tr><th>Days</th><td>{arc.arc_upstr_window_start}, {arc.arc_upstr_window_end}, {arc.arc_dwnstr_window_start}, {arc.arc_dwnstr_window_end}</td></tr>
-                    </table>
-                    """,
+                    title=generate_edge_html(vn, arc),
                 )
 
                 self.eds.append({
