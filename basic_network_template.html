@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Network Visualization</title>
     <style>
         #network {
@@ -30,9 +32,11 @@
     </style>
 </head>
 <body>
+    <h2>Network Visualization</h2>
     <div id="network"></div>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
     <script type="text/javascript">
+        var nodes = {{ nodes|safe }};
+        var edges = {{ edges|safe }};
 
         var container = document.getElementById('network');
         var data = {
@@ -152,8 +156,9 @@
                     node.color = 'gray';
             }
         });
+
         edges.forEach(edge => {
-	        switch (edge.type) {
+            switch (edge.type) {
                 case 'Load':
                     edge.color = '#eb4034';
                     break;
@@ -183,7 +188,7 @@
 
         // Update the dataset with the new colors
         data.nodes.update(nodes);
-        data.edges.update(edges)
+        data.edges.update(edges);
     </script>
 </body>
 </html>
