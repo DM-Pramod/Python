@@ -4,8 +4,8 @@
   <title>Network Visualization</title>
   <style>
     #network {
-      width: 100%;
-      height: 800px;
+      width: 100vw; /* Full width */
+      height: 100vh; /* Full height */
       border: 1px solid lightgray;
     }
     .tooltip-table {
@@ -61,7 +61,10 @@
         borderWidth: 2
       },
       edges: {
-        width: 2
+        width: 2,
+        arrows: {
+          to: { enabled: true, scaleFactor: 1 } // Add arrow to indicate direction
+        }
       },
       interaction: {
         hover: true
