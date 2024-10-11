@@ -31,7 +31,7 @@
 </head>
 <body>
     <div id="network"></div>
-
+    
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
     <script type="text/javascript">
         var nodes = {{ nodes | safe }};
@@ -130,17 +130,26 @@
         nodes.forEach(node => {
             switch (node.type) {
                 case 'Load':
-                    node.color = 'red';
+                    node.color = '#eb4034';
                     break;
                 case 'Discharge':
-                    node.color = 'purple';
+                    node.color = '#3155a8';
                     break;
-                case 'Source':
-                    node.color = 'green';
+                case 'term_source':
+                    node.color = '#3da831';
                     break;
-                case 'can_in':
-                case 'can_out':
-                    node.color = 'blue';
+                case 'canal(out)':
+                case 'canal(in)':
+                    node.color = '#23a9dd';
+                    break;
+                case 'term_sink':
+                    node.color = '#9a31a8';
+                    break;
+                case 'fob':
+                    node.color = '#FFFF00';
+                    break;
+                case 'purchase':
+                    node.color = '#C0C0C0';
                     break;
                 default:
                     node.color = 'gray';
