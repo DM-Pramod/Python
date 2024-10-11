@@ -1,12 +1,4 @@
-{
-    "nodes": [
-        {"id": 1, "label": "Node 1", "title": "Node 1 details"},
-        {"id": 2, "label": "Node 2", "title": "Node 2 details"},
-        {"id": 3, "label": "Node 3", "title": "Node 3 details"}
-    ],
-    "edges": [
-        {"from": 1, "to": 2},
-        {"from": 1, "to": 3},
-        {"from": 2, "to": 3}
-    ]
-}
+
+[{'type': 'term_source', 'id': 2, 'From': 197, 'To': 227}, {'type': 'canal(in)', 'id': 4, 'From': 221, 'To': 251}, {'type': 'Discharge', 'id': 1, 'From': 214, 'To': 304}, {'type': 'canal(in)', 'id': 7, 'From': 242, 'To': 332}, {'type': 'canal(in)', 'id': 10, 'From': 230, 'To': 250}, {'type': 'Load', 'id': 0, 'From': 223, 'To': 243}, {'type': 'canal(out)', 'id': 6, 'From': 222, 'To': 252}, {'type': 'canal(out)', 'id': 12, 'From': 231, 'To': 251}, {'type': 'canal(out)', 'id': 9, 'From': 243, 'To': 333}, {'type': 'canal(out)', 'id': 8, 'From': 244, 'To': 334}, {'type': 'canal(out)', 'id': 5, 'From': 223, 'To': 253}, {'type': 'term_sink', 'id': 3, 'From': 243, 'To': 364}, {'type': 'canal(out)', 'id': 11, 'From': 232, 'To': 252}]
+[{'Vessel': 2, 'Next_NodeID': 7, 'From_NodeID': 8, 'DAYS': (242, 332, 244.0, 334.0)}, {'Vessel': 2, 'Next_NodeID': 1, 'From_NodeID': 7, 'DAYS': (214, 303.0, 243.0, 332)}, {'Vessel': 2, 'Next_NodeID': 2, 'From_NodeID': 0, 'DAYS': (197, 200.0, 240.0, 243)}, {'Vessel': 2, 'Next_NodeID': 0, 'From_NodeID': 10, 'DAYS': (223, 243, 230.0, 250.0)}, {'Vessel': 2, 'Next_NodeID': 10, 'From_NodeID': 11, 'DAYS': (230, 250, 232.0, 252.0)}, {'Vessel': 2, 'Next_NodeID': 2, 'From_NodeID': 3, 'DAYS': (197, 227, 197.0, 227.0)}, {'Vessel': 2, 'Next_NodeID': 4, 'From_NodeID': 5, 'DAYS': (221, 251, 223.0, 253.0)}, {'Vessel': 2, 'Next_NodeID': 11, 'From_NodeID': 1, 'DAYS': (232, 252, 256.0, 276.0)}, {'Vessel': 2, 'Next_NodeID': 2, 'From_NodeID': 4, 'DAYS': (197, 227, 221.0, 251.0)}, {'Vessel': 2, 'Next_NodeID': 6, 'From_NodeID': 0, 'DAYS': (222, 238.0, 227.0, 243)}, {'Vessel': 2, 'Next_NodeID': 4, 'From_NodeID': 6, 'DAYS': (221, 251, 222.0, 252.0)}, {'Vessel': 2, 'Next_NodeID': 0, 'From_NodeID': 1, 'DAYS': (223, 243, 268.0, 288.0)}, {'Vessel': 2, 'Next_NodeID': 5, 'From_NodeID': 0, 'DAYS': (223, 238.0, 228.0, 243)}, {'Vessel': 2, 'Next_NodeID': 12, 'From_NodeID': 1, 'DAYS': (231, 251, 255.0, 275.0)}, {'Vessel': 2, 'Next_NodeID': 1, 'From_NodeID': 3, 'DAYS': (214, 304, 219.0, 309.0)}, {'Vessel': 2, 'Next_NodeID': 7, 'From_NodeID': 9, 'DAYS': (242, 332, 243.0, 333.0)}, {'Vessel': 2, 'Next_NodeID': 10, 'From_NodeID': 12, 'DAYS': (230, 250, 231.0, 251.0)}]
+
