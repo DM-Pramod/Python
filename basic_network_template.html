@@ -10,11 +10,11 @@
     }
     .tooltip-table {
       border-collapse: collapse;
-      width: 100%;
+      width: 200%; /* Double the width */
     }
     .tooltip-table th, .tooltip-table td {
       border: 1px solid black;
-      padding: 5px;
+      padding: 10px; /* Increased padding */
       text-align: left;
     }
     .tooltip-table th {
@@ -24,7 +24,7 @@
       position: absolute;
       background-color: white;
       border: 1px solid black;
-      padding: 10px;
+      padding: 20px; /* Increased padding */
       z-index: 1000;
     }
   </style>
@@ -61,10 +61,7 @@
         borderWidth: 2
       },
       edges: {
-        width: 2,
-        arrows: {
-          to: { enabled: true, scaleFactor: 1 } // Add arrow to indicate direction
-        }
+        width: 2
       },
       interaction: {
         hover: true
