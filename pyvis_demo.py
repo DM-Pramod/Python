@@ -1,46 +1,80 @@
-from pyvis.network import Network
-from jinja2 import Environment, FileSystemLoader
-import os
+from pyvis.network import Network as GNetwork
 import json
+from jinja2 import Environment, FileSystemLoader
+from config import Config 
+class Visual():
+    def create_visual(self, file_name=None):
+        self.nds = []
+        self.eds = []
 
-class Visualization:
-    def __init__(self):
-        self.net = Network()
-        self.template = None
-        self.template_env = None
-        self.nodes = []
-        self.edges = []
-        self.create_network()
+        for v in self.vessels:
+            vn = v.node_id
+            print(vn)
 
-    def load_data(self, file_path):
-        with open(file_path, 'r') as f:
-            data = json.load(f)
-        return data
+            G = GNetwork(
+                height="1200px",
+                width="100%",
+                notebook=True,
+                cdn_resources="remote",
+                directed=True,
+                select_menu=True,
+            )
 
-    def create_network(self):
-        data_file = "C:/Users/prdm/Desktop/PyPrac/network_data.json"
-        data = self.load_data(data_file)
+            for node in self.nodes:
+                type = node.type 
+                if node.type == 'term_source' :
+                    type = 'source'
+                elif node.type == 'term_sink':
+                    type = 'sink'
+    
+                G.add_node(
+                    node.node_id,
+                    shape="dot",
+                    label="{} Node ={}\n f_i={}\n t_i={}".format(node.type, node.node_id,node.window_start, node.window_end,),
+                    color=(
+                        self.config.COLOR[type]
+                        if type != "out-charters"
+                        else self.config.COLOR_OUT_CHARTERS[type]
+                    ),
+                )
 
-        for node in data['nodes']:
-            self.net.add_node(node['id'], label=node['label'], title=node['title'])
-            self.nodes.append(node)
-        for edge in data['edges']:
-            self.net.add_edge(edge['from'], edge['to'])
-            self.edges.append(edge)
+                self.nds.append({"type":node.type, "id":node.node_id,"From":node.window_start, "To":node.window_end})
 
-        self.setup_template_environment()
-        self.render_and_save_html()
+            for arc in self.arcs:
+                G.add_edge(
+                    arc.upstr.node_id,
+                    arc.dwnstr.node_id,
+                    label="Vessel={}\nFrom={}\nTo={}\nDays={}".format(
+                        vn,
+                        arc.upstr.node_id,
+                        arc.dwnstr.node_id,
+                        (arc.arc_upstr_window_start, arc.arc_upstr_window_end, arc.arc_dwnstr_window_start, arc.arc_dwnstr_window_end),
+                        # (arc.laden_days,arc.ballast_days,arc.waiting_days,arc.port_days)
+                    ),                   
+                )
+            #******************************
+                self.eds.append({"Vessel":vn,
+                        "Next_NodeID":arc.upstr.node_id,
+                        "From_NodeID":arc.dwnstr.node_id,
+                        "DAYS":(arc.arc_upstr_window_start, arc.arc_upstr_window_end, arc.arc_dwnstr_window_start, arc.arc_dwnstr_window_end)},)
+            # print("**************")
+            print((self.nds))
+            print(self.eds )
+            Visual.setup_template_environment(self)
+            Visual.render_and_save_html(self)
+            #*********************************
+            G.repulsion(node_distance=200, spring_length=200)
+            if file_name:
+                path = "{}/visual/" + file_name + ".html"
+            else:
+                path = "{}/visual/custom_poc_supernode_{}_{}.html"
+            G.show(
+                path.format(self.config.CASENAME, vn, v)
+            )
 
     def setup_template_environment(self):
-        template_dir = os.path.dirname(os.path.abspath(__file__))
-        print(f"Template Directory: {template_dir}")
-        print(f"Template Directory Exists: {os.path.exists(template_dir)}")
 
-        # Debug: Check if the template files are present
-        template_files = os.listdir(template_dir) if os.path.exists(template_dir) else []
-        print(f"Template Files: {template_files}")
-
-        # Manually load the template
+        template_dir = "outputs/Best_best_base_plan05Jul20245_test/input/"
         try:
             self.template_env = Environment(loader=FileSystemLoader(template_dir))
             self.template = self.template_env.get_template('basic_network_template.html')
@@ -49,31 +83,14 @@ class Visualization:
             print(f"An error occurred while loading the template: {e}")
 
     def render_and_save_html(self):
-        nodes = json.dumps(self.net.nodes)
-        edges = json.dumps(self.net.edges)
-        oppath = "C:/Users/prdm/Desktop/PyPrac/networkx.html"
-
-        # Render the template manually
+        
+        nds_json = json.dumps(self.nds)
+        eds_json = json.dumps(self.eds)
+        oppath = "outputs/Best_best_base_plan05Jul20245_test//visual/new_nwk.html"
         try:
-            html = self.template.render(nodes=nodes, edges=edges)
+            html = self.template.render(nodes=nds_json, edges=eds_json)
             with open(oppath, "w+") as f:
                 f.write(html)
             print(f"Network visualization saved to {oppath}")
         except Exception as e:
             print(f"An error occurred while saving the network visualization: {e}")
-
-    def show_network(self):
-        path = "C:/Users/prdm/Desktop/PyPrac/network.html"
-        try:
-            if self.net is not None:
-                self.net.show(path, notebook=False)
-        except Exception as e:
-            print(e)
-
-        directory = os.path.dirname(path)
-        if not os.path.exists(directory):
-            os.makedirs(directory)
-
-if __name__ == "__main__":
-    v = Visualization()
-    v.show_network()
