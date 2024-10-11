@@ -2,6 +2,7 @@ from pyvis.network import Network as GNetwork
 import json
 from jinja2 import Environment, FileSystemLoader
 from config import Config 
+
 class Visual():
     def create_visual(self, file_name=None):
         self.nds = []
