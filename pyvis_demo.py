@@ -105,37 +105,27 @@ class Visual():
 
 ********************************************************************************************************************
 <!-- node.html -->
-<table>
-    <tr>
-        <th>Type</th>
-        <th>Node ID</th>
-        <th>From</th>
-        <th>To</th>
-    </tr>
-    <tr>
-        <td>{{ node.type }}</td>
-        <td>{{ node.node_id }}</td>
-        <td>{{ node.window_start }}</td>
-        <td>{{ node.window_end }}</td>
-    </tr>
-</table>
+<div id="node-table-container"></div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const nodeData = {{ node_data | safe }};
+        renderNodeTable(nodeData);
+    });
+</script>
+
 
 =============================================
 <!-- edge.html -->
-<table>
-    <tr>
-        <th>Vessel</th>
-        <th>Next Node ID</th>
-        <th>From Node ID</th>
-        <th>Days</th>
-    </tr>
-    <tr>
-        <td>{{ vessel }}</td>
-        <td>{{ arc.upstr.node_id }}</td>
-        <td>{{ arc.dwnstr.node_id }}</td>
-        <td>{{ arc.arc_upstr_window_start }}, {{ arc.arc_upstr_window_end }}, {{ arc.arc_dwnstr_window_start }}, {{ arc.arc_dwnstr_window_end }}</td>
-    </tr>
-</table>
+<div id="edge-table-container"></div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const edgeData = {
+            vessel: "{{ vessel }}",
+            arc: {{ arc_data | safe }}
+        };
+        renderEdgeTable(edgeData.vessel, edgeData.arc);
+    });
+</script>
 
 ===============================================
 // Function to fetch HTML template
@@ -185,11 +175,25 @@ env = Environment(loader=FileSystemLoader('templates'))
 
 def generate_node_html(node):
     template = env.get_template('node.html')
-    return template.render(node=node)
+    node_data = json.dumps({
+        "type": node.type,
+        "node_id": node.node_id,
+        "window_start": node.window_start,
+        "window_end": node.window_end
+    })
+    return template.render(node_data=node_data)
 
 def generate_edge_html(vn, arc):
     template = env.get_template('edge.html')
-    return template.render(vessel=vn, arc=arc)
+    arc_data = json.dumps({
+        "upstr": {"node_id": arc.upstr.node_id},
+        "dwnstr": {"node_id": arc.dwnstr.node_id},
+        "arc_upstr_window_start": arc.arc_upstr_window_start,
+        "arc_upstr_window_end": arc.arc_upstr_window_end,
+        "arc_dwnstr_window_start": arc.arc_dwnstr_window_start,
+        "arc_dwnstr_window_end": arc.arc_dwnstr_window_end
+    })
+    return template.render(vessel=vn, arc_data=arc_data)
 
 class Visual():
 
