@@ -33,9 +33,8 @@
 </head>
 <body>
     <div id="network"></div>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+    {{ network.html }}
     <script type="text/javascript">
-        // Assuming the vis network object is passed as 'network'
         var network = new vis.Network(container, data, options);
 
         network.on("hoverNode", function (params) {
