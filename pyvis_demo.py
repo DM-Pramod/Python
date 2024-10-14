@@ -113,12 +113,13 @@ class Visual():
         <th>To</th>
     </tr>
     <tr>
-        <td>{{type}}</td>
-        <td>{{node_id}}</td>
-        <td>{{window_start}}</td>
-        <td>{{window_end}}</td>
+        <td>{{ node.type }}</td>
+        <td>{{ node.node_id }}</td>
+        <td>{{ node.window_start }}</td>
+        <td>{{ node.window_end }}</td>
     </tr>
 </table>
+
 =============================================
 <!-- edge.html -->
 <table>
@@ -129,12 +130,13 @@ class Visual():
         <th>Days</th>
     </tr>
     <tr>
-        <td>{{vessel}}</td>
-        <td>{{upstr_node_id}}</td>
-        <td>{{dwnstr_node_id}}</td>
-        <td>{{arc_upstr_window_start}}, {{arc_upstr_window_end}}, {{arc_dwnstr_window_start}}, {{arc_dwnstr_window_end}}</td>
+        <td>{{ vessel }}</td>
+        <td>{{ arc.upstr.node_id }}</td>
+        <td>{{ arc.dwnstr.node_id }}</td>
+        <td>{{ arc.arc_upstr_window_start }}, {{ arc.arc_upstr_window_end }}, {{ arc.arc_dwnstr_window_start }}, {{ arc.arc_dwnstr_window_end }}</td>
     </tr>
 </table>
+
 ===============================================
 // Function to fetch HTML template
 async function fetchTemplate(templatePath) {
@@ -171,6 +173,7 @@ async function renderEdgeTable(vn, arc) {
     const rendered = renderTemplate(template, data);
     container.innerHTML = rendered;
 }
+
 =============================================================================================
 from pyvis.network import Network as GNetwork
 from jinja2 import Environment, FileSystemLoader
@@ -179,6 +182,14 @@ from config import Config
 
 # Set up Jinja2 environment
 env = Environment(loader=FileSystemLoader('templates'))
+
+def generate_node_html(node):
+    template = env.get_template('node.html')
+    return template.render(node=node)
+
+def generate_edge_html(vn, arc):
+    template = env.get_template('edge.html')
+    return template.render(vessel=vn, arc=arc)
 
 class Visual():
 
@@ -215,7 +226,7 @@ class Visual():
                         if type != "out-charters"
                         else self.config.COLOR_OUT_CHARTERS[type]
                     ),
-                    title=f"<div id='node-table-container'></div><script>renderNodeTable({json.dumps(node.__dict__)});</script>",
+                    title=generate_node_html(node),
                 )
 
                 self.nds.append({"type": node.type, "id": node.node_id, "From": node.window_start, "To": node.window_end})
@@ -230,7 +241,7 @@ class Visual():
                         arc.dwnstr.node_id,
                         (arc.arc_upstr_window_start, arc.arc_upstr_window_end, arc.arc_dwnstr_window_start, arc.arc_dwnstr_window_end),
                     ),
-                    title=f"<div id='edge-table-container'></div><script>renderEdgeTable('{vn}', {json.dumps(arc.__dict__)});</script>",
+                    title=generate_edge_html(vn, arc),
                 )
 
                 self.eds.append({
@@ -248,4 +259,5 @@ class Visual():
             G.show(
                 path.format(self.config.CASENAME, vn, v)
             )
+
 ===============================================================
