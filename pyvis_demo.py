@@ -105,28 +105,58 @@ class Visual():
 
 ********************************************************************************************************************
 <!-- node.html -->
-<div id="node-table-container"></div>
+<table>
+    <tr>
+        <th>Type</th>
+        <th>Node ID</th>
+        <th>From</th>
+        <th>To</th>
+    </tr>
+    <tr>
+        <td id="node-type"></td>
+        <td id="node-id"></td>
+        <td id="node-from"></td>
+        <td id="node-to"></td>
+    </tr>
+</table>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const nodeData = {{ node_data | safe }};
-        renderNodeTable(nodeData);
+        document.getElementById('node-type').textContent = nodeData.type;
+        document.getElementById('node-id').textContent = nodeData.node_id;
+        document.getElementById('node-from').textContent = nodeData.window_start;
+        document.getElementById('node-to').textContent = nodeData.window_end;
     });
 </script>
 
-
 =============================================
 <!-- edge.html -->
-<div id="edge-table-container"></div>
+<table>
+    <tr>
+        <th>Vessel</th>
+        <th>Next Node ID</th>
+        <th>From Node ID</th>
+        <th>Days</th>
+    </tr>
+    <tr>
+        <td id="vessel"></td>
+        <td id="next-node-id"></td>
+        <td id="from-node-id"></td>
+        <td id="days"></td>
+    </tr>
+</table>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const edgeData = {
             vessel: "{{ vessel }}",
             arc: {{ arc_data | safe }}
         };
-        renderEdgeTable(edgeData.vessel, edgeData.arc);
+        document.getElementById('vessel').textContent = edgeData.vessel;
+        document.getElementById('next-node-id').textContent = edgeData.arc.upstr.node_id;
+        document.getElementById('from-node-id').textContent = edgeData.arc.dwnstr.node_id;
+        document.getElementById('days').textContent = `${edgeData.arc.arc_upstr_window_start}, ${edgeData.arc.arc_upstr_window_end}, ${edgeData.arc.arc_dwnstr_window_start}, ${edgeData.arc.arc_dwnstr_window_end}`;
     });
 </script>
-
 ===============================================
 // Function to fetch HTML template
 async function fetchTemplate(templatePath) {
