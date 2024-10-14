@@ -316,4 +316,169 @@ class Visual():
                 path.format(self.config.CASENAME, vn, v)
             )
 
-===============================================================
+=======================================================================================================================================================================
+
+
+
+
+
+<style>
+    #network {
+      width: 100%;
+      height: 800px;
+      border: 1px solid lightgray;
+    }
+    .tooltip-table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    .tooltip-table th, .tooltip-table td {
+      border: 1px solid black;
+      padding: 5px;
+      text-align: left;
+    }
+    .tooltip-table th {
+      background-color: #f2f2f2;
+    }
+    .tooltip {
+      position: absolute;
+      background-color: white;
+      border: 1px solid black;
+      padding: 10px;
+      z-index: 1000;
+    }
+  </style>
+<script type="text/javascript">
+    var nodes = {{ nodes | safe }};
+    var edges = {{ edges | safe }};
+  
+    var container = document.getElementById('network');
+    var data = {
+      nodes: new vis.DataSet(nodes),
+      edges: new vis.DataSet(edges)
+    };
+    var options = {
+      nodes: {
+        shape: 'dot',
+        size: 16,
+        font: {
+          size: 32,
+          color: '#ffffff'
+        },
+        borderWidth: 2
+      },
+      edges: {
+        width: 2
+      },
+      interaction: {
+        hover: true
+      },
+      physics: {
+        stabilization: false
+      }
+    };
+    var network = new vis.Network(container, data, options);
+  
+    network.on("hoverNode", function (params) {
+      var node = nodes.find(n => n.id === params.node);
+      var tooltipContent = `
+        <table class="tooltip-table">
+          <tr><th>ID</th><td>${node.id}</td></tr>
+          <tr><th>Type</th><td>${node.type}</td></tr>
+          <tr><th>From</th><td>${node.From}</td></tr>
+          <tr><th>To</th><td>${node.To}</td></tr>
+        </table>`;
+      var tooltip = document.createElement('div');
+      tooltip.innerHTML = tooltipContent;
+      tooltip.className = 'tooltip';
+      tooltip.id = 'tooltip';
+      document.body.appendChild(tooltip);
+  
+      document.onmousemove = function (e) {
+        var x = e.clientX, y = e.clientY;
+        tooltip.style.top = (y + 20) + 'px';
+        tooltip.style.left = (x + 20) + 'px';
+      };
+    });
+  
+    network.on("blurNode", function (params) {
+      var tooltip = document.getElementById('tooltip');
+      if (tooltip) {
+        tooltip.remove();
+      }
+      document.onmousemove = null;
+    });
+  
+    network.on("hoverEdge", function (params) {
+      var edge = edges.find(e => e.id === params.edge);
+      var tooltipContent = `
+        <table class="tooltip-table">
+          <tr><th>Vessel</th><td>${edge.Vessel}</td></tr>
+          <tr><th>Next_NodeID</th><td>${edge.Next_NodeID}</td></tr>
+          <tr><th>From_NodeID</th><td>${edge.From_NodeID}</td></tr>
+          <tr><th>DAYS</th><td>${edge.DAYS}</td></tr>
+        </table>`;
+      var tooltip = document.createElement('div');
+      tooltip.innerHTML = tooltipContent;
+      tooltip.className = 'tooltip';
+      tooltip.id = 'tooltip';
+      document.body.appendChild(tooltip);
+  
+      document.onmousemove = function (e) {
+        var x = e.clientX, y = e.clientY;
+        tooltip.style.top = (y + 20) + 'px';
+        tooltip.style.left = (x + 20) + 'px';
+      };
+    });
+  
+    network.on("blurEdge", function (params) {
+      var tooltip = document.getElementById('tooltip');
+      if (tooltip) {
+        tooltip.remove();
+      }
+      document.onmousemove = null;
+    });
+  
+    // Set node colors based on type
+    nodes.forEach(node => {
+      switch (node.type) {
+        case 'Load':
+          node.color = 'red';
+          break;
+        case 'Discharge':
+          node.color = 'purple';
+          break;
+        case 'Source':
+          node.color = 'green';
+          break;
+        case 'can_in':
+        case 'can_out':
+          node.color = 'blue';
+          break;
+        default:
+          node.color = 'gray';
+      }
+    });
+  
+    // Set edge colors based on properties
+    edges.forEach(edge => {
+      switch (edge.type) {
+        case 'Type1':
+          edge.color = { color: 'red' };
+          break;
+        case 'Type2':
+          edge.color = { color: 'blue' };
+          break;
+        case 'Type3':
+          edge.color = { color: 'green' };
+          break;
+        default:
+          edge.color = { color: 'gray' };
+      }
+    });
+  
+    // Update the dataset with the new colors
+    data.nodes.update(nodes);
+    data.edges.update(edges);
+  </script>
+    
