@@ -1,0 +1,13 @@
+def export_dataframes_to_json(obj, output_dir, json_file_name='sample_input.json'):
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+    combined_data = {}
+    for attr_name in dir(obj):
+        attr_value = getattr(obj, attr_name)
+        if isinstance(attr_value, pd.DataFrame):
+            single_row_df = attr_value.head(1)
+            combined_data[attr_name] = single_row_df.to_dict(orient='records')[0]
+    json_file_path = os.path.join(output_dir, json_file_name)
+    with open(json_file_path, 'w') as json_file:
+        json.dump(combined_data, json_file, indent=4)
+    print(f"Exported combined data to {json_file_path}")
