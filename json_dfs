@@ -1,1 +1,10 @@
-# (sn,en) :{(sn->G1->G2->en),(x,y,z,p),(td_ww),(total_cost)}
+def calculate_days_and_cost(row):
+    pass_by = row['PassBy'].split(',')
+    travel_days = sum(df2.loc[(df2['GateName'].isin(pass_by)) & ((df2['id'] == row['StartPort']) | (df2['id'] == row['EndPort'])), 'travel_Days'])
+    transit_days = sum(df3.loc[(df3['startGate'].isin(pass_by)) & (df3['EndGate'].isin(pass_by)), 'TransitDays'])
+    wait_days = sum(gate_attributes_df.loc[gate_attributes_df['Gate'].isin(pass_by), 'WaitDays'])
+    total_cost = sum(gate_attributes_df.loc[gate_attributes_df['Gate'].isin(pass_by), 'GateCost'])
+    return pd.Series([travel_days + transit_days + wait_days, total_cost])
+
+# Apply the function
+df1[['total_days', 'total_cost']] = df1.apply(calculate_days_and_cost, axis=1)
