@@ -23,3 +23,16 @@ node_object = {}
 
 
 {1 Discharge, 3 term_sink, 0 Load, 2 term_source}
+
+
+output_list = []
+for element in elements:
+    if element.startswith('G'):
+        output_list.append(f'{gate_counter} {element}')
+        gate_counter += 1
+    else:
+        for node in nodes:
+            if node.startswith(element):
+                output_list.append(node)
+                break
+
