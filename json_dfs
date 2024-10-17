@@ -36,3 +36,32 @@ for element in elements:
                 output_list.append(node)
                 break
 [['0 Load', '111 Gate1', '112 Gate2', '1 Discharge'], ['2 term_source', '113 Gate1', '114 Gate2', '3 term_sink'], ['1 Discharge', '115 Gate2', '3 term_sink'], ['2 term_source', '116 Gate2', '0 Load'], ['1 Discharge', '117 Gate2', '118 Gate1', '0 Load']]
+
+
+
+
+# Initialize nds and acs
+nds = []
+acs = []
+
+# Process each sublist
+for sublist in input_list:
+    first_output = []
+    second_output = []
+    
+    # Generate the first output
+    for i in range(len(sublist) - 1):
+        first_output.append(f'{sublist[i]} {sublist[i+1]}')
+    
+    # Generate the second output
+    for item in sublist:
+        if 'Gate' in item:
+            second_output.append(item)
+    
+    # Append to nds and acs
+    nds.extend(first_output)
+    acs.extend(second_output)
+
+# Print the results
+print("nds:", nds)
+print("acs:", acs)
