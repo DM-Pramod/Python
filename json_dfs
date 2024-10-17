@@ -21,29 +21,5 @@ df1[['total_days', 'total_cost']] = df1.apply(calculate_days_and_cost, axis=1)
 # Define the node object
 node_object = {}
 
-# Function 1: Add gate nodes to the node object
-def add_gate_node(gate):
-    if gate not in node_object:
-        node_object[gate] = f"Gate{gate[-1]}"
-    return node_object
 
-# Function 2: Add arcs and travel information to the arc object
-def add_arc_details(arc, travel_days, total_days, cost):
-    print(f"Arc: {arc}, Travel Days: {travel_days}, Total Days: {total_days}, Cost: {cost}")
-
-# Iterate through the dictionary
-for key, value in gate_arc_dict.items():
-    travel_days, travel_path, total_days, cost = value
-    
-    # Extract gates from the travel path
-    gates = [part for part in travel_path.split('->') if 'G' in part]
-    
-    # Call Function 1 for each unique gate
-    for gate in set(gates):
-        node_object = add_gate_node(gate)
-    
-    # Extract arcs from the travel path
-    arc = [(travel_path[i], travel_path[i+1]) for i in range(len(travel_path) - 1)]
-    
-    # Call Function 2 with arc details
-    add_arc_details(arc, travel_days, total_days, cost)
+{1 Discharge, 3 term_sink, 0 Load, 2 term_source}
