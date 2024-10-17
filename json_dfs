@@ -35,4 +35,4 @@ for element in elements:
             if node.startswith(element):
                 output_list.append(node)
                 break
-
+[['0 Load', '111 Gate1', '112 Gate2', '1 Discharge'], ['2 term_source', '113 Gate1', '114 Gate2', '3 term_sink'], ['1 Discharge', '115 Gate2', '3 term_sink'], ['2 term_source', '116 Gate2', '0 Load'], ['1 Discharge', '117 Gate2', '118 Gate1', '0 Load']]
