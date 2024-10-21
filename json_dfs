@@ -2,45 +2,80 @@ gate_counter = 111
 output_list = []
 
 for key, value in gate_arc_dict.items():
-    travel_days, travel_path, total_days, cost = value
-    elements = travel_path.split('->')
-    sublist = []
 
-    for element in elements:
-        if element.startswith('G'):
-            gate_type = element.replace('G', 'Gate')
-            sublist.append(f'{gate_counter} {gate_type} {total_days} {cost}')
-            gate_counter += 1
-        else:
-            for node in nodes:
-                node = str(node)
-                if node.startswith(element):
-                    sublist.append(node)
-                    break
-    output_list.append(sublist)
+   travel_days, travel_path, total_days, cost = value
 
-# Initialize nds and acs
+   elements = travel_path.split('->')
+
+   sublist = []
+
+   
+
+   for element in elements:
+
+       if element.startswith('G'):
+
+           gate_type = element.replace('G','Gate')
+
+           sublist.append(f'{gate_counter} {gate_type}')
+
+           gate_counter += 1
+
+       else:
+
+           for node in nodes:
+
+               node = (str(node))
+
+               if node.startswith(element):
+
+                   sublist.append(node)
+
+                   break
+
+   output_list.append(sublist)
+
+   
+
+Initialize nds and acs
 nds = []
+
 acs = []
 
-# Process each sublist
+Process each sublist
 for sublist in output_list:
-    first_output = []
-    second_output = []
 
-    # Generate the first output
-    for i in range(len(sublist) - 1):
-        first_output.append(f'{sublist[i]} {sublist[i+1]}')
+   first_output = []
 
-    # Generate the second output
-    for item in sublist:
-        if 'Gate' in item:
-            second_output.append(item)
+   second_output = []
 
-    # Append to nds and acs
-    acs.extend(first_output)
-    nds.extend(second_output)
+   
 
-# Print the results
+   # Generate the first output
+
+   for i in range(len(sublist) - 1):
+
+       first_output.append(f'{sublist[i]} {sublist[i+1]}')
+
+   
+
+   # Generate the second output
+
+   for item in sublist:
+
+       if 'Gate' in item:
+
+           second_output.append(item)
+
+   
+
+   # Append to nds and acs
+
+   acs.extend(first_output)
+
+   nds.extend(second_output)
+
+Print the results
 print("nds:", nds)
+
 print("acs:", acs)
