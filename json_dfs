@@ -1,26 +1,28 @@
-{(0, 1): [(1, 4, 1), '0->G1->G2->1', 10, 3000], (2, 3): [(4, 4, 6), '2->G1->G2->3', 18, 3000], (1, 3): [(1, 6), '1->G2->3', 7, 2000], (2, 0): [(5, 3), '2->G2->0', 8, 2000], (1, 0): [(1, 0, 1), '1->G2->G1->0', 6, 3000]}
+gate_arc_dict = {
+    (0, 1): [(1, 4, 1), '0->G1->G2->1', 10, 3000],
+    (2, 3): [(4, 4, 6), '2->G1->G2->3', 18, 3000],
+    (1, 3): [(1, 6), '1->G2->3', 7, 2000],
+    (2, 0): [(5, 3), '2->G2->0', 8, 2000],
+    (1, 0): [(1, 0, 1), '1->G2->G1->0', 6, 3000]
+}
 
 output_list = []
+
 for key, value in gate_arc_dict.items():
     travel_days, travel_path, total_days, cost = value
     elements = travel_path.split('->')
     sublist = []
-    
+    gate_counter = 111  # Initialize gate counter
+
     for element in elements:
         if element.startswith('G'):
-            gate_type = element.replace('G','Gate')
-            sublist.append(f'{gate_counter} {gate_type}')
+            gate_type = element.replace('G', 'Gate')
+            sublist.append(f'{gate_counter} {gate_type} {total_days} {cost}')
             gate_counter += 1
         else:
-            for node in nodes:
-                node = (str(node))
-                if node.startswith(element):
-                    sublist.append(node)
-                    break
+            sublist.append(element)
+
     output_list.append(sublist)
-    
-
-
 
 # Initialize nds and acs
 nds = []
@@ -30,16 +32,16 @@ acs = []
 for sublist in output_list:
     first_output = []
     second_output = []
-    
+
     # Generate the first output
     for i in range(len(sublist) - 1):
         first_output.append(f'{sublist[i]} {sublist[i+1]}')
-    
+
     # Generate the second output
     for item in sublist:
         if 'Gate' in item:
             second_output.append(item)
-    
+
     # Append to nds and acs
     acs.extend(first_output)
     nds.extend(second_output)
@@ -47,14 +49,3 @@ for sublist in output_list:
 # Print the results
 print("nds:", nds)
 print("acs:", acs)
-
-
-
-
-
-
-
-
-
-nds: ['111 Gate1', '112 Gate2', '113 Gate1', '114 Gate2', '115 Gate2', '116 Gate2', '117 Gate2', '118 Gate1']
-acs: ['0 Load 111 Gate1', '111 Gate1 112 Gate2', '112 Gate2 1 Discharge', '2 term_source 113 Gate1', '113 Gate1 114 Gate2', '114 Gate2 3 term_sink', '1 Discharge 115 Gate2', '115 Gate2 3 term_sink', '2 term_source 116 Gate2', '116 Gate2 0 Load', '1 Discharge 117 Gate2', '117 Gate2 118 Gate1', '118 Gate1 0 Load']
