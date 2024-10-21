@@ -7,44 +7,42 @@ gate_arc_dict = {
 }
 
 output_list = []
+acs_list = []
 
 for key, value in gate_arc_dict.items():
     travel_days, travel_path, total_days, cost = value
     elements = travel_path.split('->')
     sublist = []
+    acs_sublist = []
     gate_counter = 111  # Initialize gate counter
 
     for element in elements:
         if element.startswith('G'):
             gate_type = element.replace('G', 'Gate')
             sublist.append(f'{gate_counter} {gate_type} {total_days} {cost}')
+            acs_sublist.append(f'{gate_counter} {gate_type}')
             gate_counter += 1
         else:
             sublist.append(element)
+            acs_sublist.append(element)
 
     output_list.append(sublist)
+    acs_list.append(acs_sublist)
 
 # Initialize nds and acs
 nds = []
 acs = []
 
-# Process each sublist
+# Process each sublist for nds
 for sublist in output_list:
-    first_output = []
-    second_output = []
-
-    # Generate the first output
-    for i in range(len(sublist) - 1):
-        first_output.append(f'{sublist[i]} {sublist[i+1]}')
-
-    # Generate the second output
     for item in sublist:
         if 'Gate' in item:
-            second_output.append(item)
+            nds.append(item)
 
-    # Append to nds and acs
-    acs.extend(first_output)
-    nds.extend(second_output)
+# Process each sublist for acs
+for sublist in acs_list:
+    for i in range(len(sublist) - 1):
+        acs.append(f'{sublist[i]} {sublist[i+1]}')
 
 # Print the results
 print("nds:", nds)
