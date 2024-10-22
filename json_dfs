@@ -1,91 +1,24 @@
-    def get_node_details(Type,Node,f_i,t_i):
-        html_content = """
-        <div style="border: 1px solid #ccc; padding: 10px;">
-            <style>
-                .hover-table {
-                width: 100%;
-                border-collapse: collapse;
-                }
-                .hover-table th, .hover-table td {
-                border: 1px solid #ddd;
-                padding: 16px; /* Double padding */
-                }
-                .hover-table th {
-                background-color: #f2f2f2;
-                text-align: left;
-                }
-            </style>
-            <table class="hover-table">
-                <tr>
-                    <th>Type</th>
-                    <td>{Type}</td>           
-                </tr>
-                <tr>
-                    <th>Node</th>
-                    <td>{Node}</td>           
-                </tr>
-                <tr>
-                    <th>f_i</th>
-                    <td>{f_i}</td>           
-                </tr>
-                <tr>
-                    <th>t_i</th>
-                    <td>{t_i}</td>           
-                </tr>
-            </table>
-        </div>
-        """.format(Type=Type,Node=Node,f_i=f_i,t_i=t_i)
-        return html_content
-
-
-
-
-def createVisual():
-            G.add_node(
-                node.node_id,
-                shape=(
-                    "dot"
-                    if type != 'Gate1'  and type !='Gate2'
-                    else "triangleDown"),
-                # label=("{} Node ={}\n f_i={}\n t_i={}".format(node.type, node.node_id, node.window_start, node.window_end) if type != 'Gate1'  and type !='Gate2' else "{} Node ={}\n total_Days={}\n Total_Cost={}".format(node.type, node.node_id, node.window_start, node.window_end)),
-                title= Visual.get_node_details(node.type, node.node_id, node.window_start, node.window_end),
-                color=(
-                    self.config.COLOR[type]
-                    if type != "Gate1"  and type !="Gate2"
-                    else "#40E0D0"
-                ),
-
-            )
-
-
-
-
-
-Getting some below error can you please tell what is the issue \n?
-
-
-
-
-
-82     elif node.type == 'term_sink':
-     83         type = 'sink'
-     85     G.add_node(
-     86         node.node_id,
-     87         shape=(
-     88             "dot"
-     89             if type != 'Gate1'  and type !='Gate2'
-     90             else "triangleDown"),
-     91         # label=("{} Node ={}\n f_i={}\n t_i={}".format(node.type, node.node_id, node.window_start, node.window_end) if type != 'Gate1'  and type !='Gate2' else "{} Node ={}\n total_Days={}\n Total_Cost={}".format(node.type, node.node_id, node.window_start, node.window_end)),
----> 92         title= Visual.get_node_details(node.type, node.node_id, node.window_start, node.window_end),
-     93         color=(
-     94             self.config.COLOR[type]
-     95             if type != "Gate1"  and type !="Gate2"
-     96             else "#40E0D0"
-     97         ),
-     98 
-     99     )
-    101 for arc in self.arcs:
-...
-     42     </div>
-     43     """.format(Type=Type,Node=Node,f_i=f_i,t_i=t_i)
-     44     return html_content
+details =
+f"""     <table border="1" style="border-collapse: collapse; width: 100%;">        <tr><th style="padding: 8px; text-align: left; border: 1px solid #ddd;">Attribute</th><th style="padding: 8px; text-align: left; border: 1px solid #ddd;">Value</th></tr>        <tr><td style="padding: 8px; text-align: left; border: 1px solid #ddd;">Node ID</td><td style="padding: 8px; text-align: left; border: 1px solid #ddd;">
+{html.escape(
+str
+(node.node_id))}
+</td></tr>         <tr><td style="padding: 8px; text-align: left; border: 1px solid #ddd;">Window Start</td><td style="padding: 8px; text-align: left; border: 1px solid #ddd;">
+{html.escape(
+str
+(node.window_start))}
+</td></tr> <tr><td style="padding: 8px; text-align: left; border: 1px solid #ddd;">Window End</td><td style="padding: 8px; text-align: left; border: 1px solid #ddd;">
+{html.escape(
+str
+(node.window_end))}
+</td></tr> <tr><td style="padding: 8px; text-align: left; border: 1px solid #ddd;">Node Type</td><td style="padding: 8px; text-align: left; border: 1px solid #ddd;">
+{html.escape(
+str
+(node.node_type))}
+</td></tr> <tr><td style="padding: 8px; text-align: left; border: 1px solid #ddd;">Port</td><td style="padding: 8px; text-align: left; border: 1px solid #ddd;">
+{html.escape(
+str
+(node.port))}
+</td></tr> </table> """
+return
+details
