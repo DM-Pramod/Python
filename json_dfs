@@ -1,53 +1,38 @@
 def get_node_details(Type, Node, f_i, t_i):
     html_content = """
-    <html>
-    <head>
-        <style>
-            .hover-table {
-                width: 100%;
-                border-collapse: collapse;
-            }
-            .hover-table th, .hover-table td {
-                border: 1px solid #ddd;
-                padding: 16px; /* Double padding */
-            }
-            .hover-table th {
-                background-color: #f2f2f2;
-                text-align: left;
-            }
-        </style>
-        <script>
-            function insertHTMLContent() {
-                const html = `
-                    <table class="hover-table">
-                        <tr>
-                            <th>Type</th>
-                            <td>{Type}</td>
-                        </tr>
-                        <tr>
-                            <th>Node</th>
-                            <td>{Node}</td>
-                        </tr>
-                        <tr>
-                            <th>f_i</th>
-                            <td>{f_i}</td>
-                        </tr>
-                        <tr>
-                            <th>t_i</th>
-                            <td>{t_i}</td>
-                        </tr>
-                    </table>
-                `;
-                const container = document.getElementById("content-container");
-                container.innerHTML = html;
-            }
-            document.addEventListener("DOMContentLoaded", insertHTMLContent);
-        </script>
-    </head>
-    <body>
-        <div id="content-container"></div>
-    </body>
-    </html>
+    <div style="border: 1px solid #ccc; padding: 10px;">
+      <style>
+        .hover-table {
+          width: 100%;
+          border-collapse: collapse;
+        }
+        .hover-table th, .hover-table td {
+          border: 1px solid #ddd;
+          padding: 16px; /* Double padding */
+        }
+        .hover-table th {
+          background-color: #f2f2f2;
+          text-align: left;
+        }
+      </style>
+      <table class="hover-table">
+        <tr>
+          <th>Type</th>
+          <td>{Type}</td>
+        </tr>
+        <tr>
+          <th>Node</th>
+          <td>{Node}</td>
+        </tr>
+        <tr>
+          <th>f_i</th>
+          <td>{f_i}</td>
+        </tr>
+        <tr>
+          <th>t_i</th>
+          <td>{t_i}</td>
+        </tr>
+      </table>
+    </div>
     """.format(Type=Type, Node=Node, f_i=f_i, t_i=t_i)
-
     return html_content
