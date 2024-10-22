@@ -1,19 +1,53 @@
-# Define the get_node_details function to format node details in a table
-def
-get_node_details
-(
-node
-):     details =
-f"""     <table border="1">        <tr><th>Attribute</th><th>Value</th></tr>        <tr><td>Node ID</td><td>
-{node.node_id}
-</td></tr>         <tr><td>Window Start</td><td>
-{node.window_start}
-</td></tr> <tr><td>Window End</td><td>
-{node.window_end}
-</td></tr> <tr><td>Node Type</td><td>
-{node.node_type}
-</td></tr> <tr><td>Port</td><td>
-{node.port}
-</td></tr> </table> """
-return
-details
+from pyvis.network import Network
+
+# Initialize the network
+net = Network()
+
+# Define your keys and values
+keys = ["Key 1", "Key 2", "Key 3"]
+values = ["Value 1", "Value 2", "Value 3"]
+
+# Construct the HTML content
+html_content = """
+<div style="border: 1px solid #ccc; padding: 10px;">
+  <style>
+    .hover-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .hover-table th, .hover-table td {
+      border: 1px solid #ddd;
+      padding: 16px; /* Double padding */
+    }
+    .hover-table th {
+      background-color: #f2f2f2;
+      text-align: left;
+    }
+  </style>
+  <table class="hover-table">
+    <tr>
+      <th>Key</th>
+      <th>Value</th>
+    </tr>
+"""
+
+# Add rows to the table
+for key, value in zip(keys, values):
+    html_content += f"""
+    <tr>
+      <td>{key}</td>
+      <td>{value}</td>
+    </tr>
+    """
+
+# Close the table and div tags
+html_content += """
+  </table>
+</div>
+"""
+
+# Add a node with the HTML title
+net.add_node(1, label="Node 1", title=html_content)
+
+# Generate and show the network
+net.show("network.html")
