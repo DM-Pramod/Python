@@ -1,38 +1,58 @@
-def get_node_details(Type, Node, f_i, t_i):
-    html_content = """
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Node Details</title>
+</head>
+<body>
     <div style="border: 1px solid #ccc; padding: 10px;">
-      <style>
-        .hover-table {
-          width: 100%;
-          border-collapse: collapse;
-        }
-        .hover-table th, .hover-table td {
-          border: 1px solid #ddd;
-          padding: 16px; /* Double padding */
-        }
-        .hover-table th {
-          background-color: #f2f2f2;
-          text-align: left;
-        }
-      </style>
-      <table class="hover-table">
-        <tr>
-          <th>Type</th>
-          <td>{Type}</td>
-        </tr>
-        <tr>
-          <th>Node</th>
-          <td>{Node}</td>
-        </tr>
-        <tr>
-          <th>f_i</th>
-          <td>{f_i}</td>
-        </tr>
-        <tr>
-          <th>t_i</th>
-          <td>{t_i}</td>
-        </tr>
-      </table>
+        <style>
+            .hover-table {
+            width: 100%;
+            border-collapse: collapse;
+            }
+            .hover-table th, .hover-table td {
+            border: 1px solid #ddd;
+            padding: 16px; /* Double padding */
+            }
+            .hover-table th {
+            background-color: #f2f2f2;
+            text-align: left;
+            }
+        </style>
+            <table class="hover-table">
+                <tr>
+                    <th>Type</th>
+                    <td>{Type}</td>
+                </tr>
+                <tr>
+                    <th>Node</th>
+                    <td>{Node}</td>
+                </tr>
+                <tr>
+                    <th>f_i</th>
+                    <td>{f_i}</td>
+                </tr>
+                <tr>
+                    <th>t_i</th>
+                    <td>{t_i}</td>
+                </tr>
+            </table>
     </div>
-    """.format(Type=Type, Node=Node, f_i=f_i, t_i=t_i)
-    return html_content
+</body>
+</html>
+
+
+    def setup_template_environment(self):
+        template_dir = "outputs/Best_best_base_plan05Jul20245_test/input"
+        try:
+            self.template_env = Environment(loader=FileSystemLoader(template_dir))
+            self.template = self.template_env.get_template('basic_network_template.html')
+            print("Template loaded successfully")
+        except Exception as e:
+            print(f"An error occurred while loading the template: {e}")
+
+
+Need to pass these 4 values while calling the function node.type, node.node_id, node.window_start, node.window_end
