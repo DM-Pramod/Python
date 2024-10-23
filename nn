@@ -1,50 +1,16 @@
-import pandas as pd
-
-# DataFrame 1
-df1 = pd.DataFrame({
-    'StartPort': [0, 1],
-    'EndPort': [1, 3],
-    'PassBy': ['G1,G2', 'G2']
-})
-
-# DataFrame 2
-df2 = pd.DataFrame({
-    'id': [0, 1, 3],
-    'GateName': ['G1', 'G2', 'G2'],
-    'travel_Days': [3, 4, 5]
-})
-
-# DataFrame 3
-df3 = pd.DataFrame({
-    'startGate': ['G1'],
-    'EndGate': ['G2'],
-    'TransitDays': [4]
-})
-
-def calculate_total_days(row):
-    start_port = row['StartPort']
-    end_port = row['EndPort']
-    pass_by = row['PassBy'].split(',')
-
-    total_days = 0
-
-    # Calculate days from StartPort to the first gate in PassBy
-    if pass_by[0] in df2['GateName'].values:
-        total_days += df2.loc[(df2['id'] == start_port) & (df2['GateName'] == pass_by[0]), 'travel_Days'].values[0]
-
-    # Calculate days between gates in PassBy
-    for i in range(len(pass_by) - 1):
-        start_gate = pass_by[i]
-        end_gate = pass_by[i + 1]
-        if ((df3['startGate'] == start_gate) & (df3['EndGate'] == end_gate)).any():
-            total_days += df3.loc[(df3['startGate'] == start_gate) & (df3['EndGate'] == end_gate), 'TransitDays'].values[0]
-
-    # Calculate days from the last gate in PassBy to EndPort
-    if pass_by[-1] in df2['GateName'].values:
-        total_days += df2.loc[(df2['GateName'] == pass_by[-1]) & (df2['id'] == end_port), 'travel_Days'].values[0]
-
-    return total_days
-
-df1['total_days'] = df1.apply(calculate_total_days, axis=1)
-
-print(df1)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Node Details</title>
+</head>
+<body>
+    <p>Type: {{ type }}</p>
+    <p>Node ID: {{ node_id }}</p>
+    <p>f_i: {{ f_i }}</p>
+    <p>t_i: {{ t_i }}</p>
+    <p>Window Start: {{ window_start }}</p>
+    <p>Window End: {{ window_end }}</p>
+</body>
+</html>
