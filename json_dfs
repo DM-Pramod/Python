@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,15 +43,20 @@
 </body>
 </html>
 
-
-    def setup_template_environment(self):
-        template_dir = "outputs/Best_best_base_plan05Jul20245_test/input"
-        try:
-            self.template_env = Environment(loader=FileSystemLoader(template_dir))
-            self.template = self.template_env.get_template('basic_network_template.html')
-            print("Template loaded successfully")
-        except Exception as e:
-            print(f"An error occurred while loading the template: {e}")
-
-
-Need to pass these 4 values while calling the function node.type, node.node_id, node.window_start, node.window_end
+def setup_template_environment(self,node):
+    template_dir = "outputs/Best_best_base_plan05Jul20245_test/input"
+    try:
+        self.template_env = Environment(loader=FileSystemLoader(template_dir))
+        self.template = self.template_env.get_template('node.html')
+        print("Template loaded successfully")
+        context = {
+            'type':node.type,
+            'node_id':node.node_id,
+            'window_start':node.window_start,
+            'window_end':node.window_end
+        }
+        tplt_html = self.template.render(context)
+        oppath = "outputs/Best_best_base_plan05Jul20245_test/input/table_demo.html"
+        with open(oppath, "w+") as f:
+            f.write(tplt_html)
+        return tplt_html
