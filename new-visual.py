@@ -76,3 +76,4 @@ dataframes = [df1, df2, df3, df4, df5, df6, df7]
 output_file = 'commodity.json'
 dataframes_to_json(dataframes, output_file)
 
+_vessel_inventory_df['vessel_market'] = _vessel_inventory_df['vessel_index'].str.split(pat='+',n=2).str[2]
