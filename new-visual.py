@@ -1,79 +1,31 @@
-import json
-
-def dataframe_to_json(df, columns, keys, output_file):
-    if len(columns) != len(keys):
-        raise ValueError("The number of columns must match the number of keys.")
-
-    selected_columns = df[columns]
-    
-    unique_rows = selected_columns.drop_duplicates()
-    
-    json_list = []
-    for index, row in unique_rows.iterrows():
-        json_dict = {keys[i]: row[columns[i]] for i in range(len(columns))}
-        json_list.append(json_dict)
-    
-    with open(output_file, 'w') as json_file:
-        json.dump(json_list, json_file, indent=4)
-
-    
-columns = ['commodity', 'category', 'source', 'market']
-keys = ['name', 'product_type', 'source', 'market']
-
-output_file = 'commodity.json'
-
-dataframe_to_json(purchased_commodity_df, columns, keys, output_file)
-
-
-import json
 import pandas as pd
-import re
 
-def parse_id_column(id_value):
-    try:
-        parts = id_value.split('+')
-        v_id = parts[0]
-        bt = parts[1]
-        
-        # Extract v_vol using regex to handle cases like "35kt@st"
-        v_vol_match = re.search(r'\d+k', parts[2])
-        v_vol = v_vol_match.group(0) if v_vol_match else None
-        
-        # Extract place by removing the volume part and any surrounding parentheses
-        place = re.sub(r'{{{{\(.*\)}}}}', '', parts[2]).strip()
-        
-        return {
-            'v_id': v_id,
-            'bt': bt,
-            'v_vol': v_vol,
-            'place': place
-        }
-    except IndexError:
-        raise ValueError(f"ID format is incorrect: {id_value}")
+# Initialize the Final DataFrame
+final_df = pd.DataFrame(columns=['column_id', 'col B', 'col C', 'col D', 'col E', 'col F', 'col G', 'col H', 'col I', 'col J'])
 
-def dataframes_to_json(dataframes, output_file):
-    # Extract the 'id' column from each dataframe
-    id_columns = [df[['id']] for df in dataframes]
-    
-    # Concatenate all id columns into a single dataframe
-    concatenated_df = pd.concat(id_columns, ignore_index=True)
-    
-    # Drop duplicates to ensure uniqueness
-    unique_ids = concatenated_df.drop_duplicates()
-    
-    # Parse the id column to extract required values
-    json_list = []
-    for index, row in unique_ids.iterrows():
-        parsed_data = parse_id_column(row['id'])
-        json_list.append(parsed_data)
-    
-    # Write the result to a JSON file
-    with open(output_file, 'w') as json_file:
-        json.dump(json_list, json_file, indent=4)
+# Define the Function to Process Each DataFrame
+def process_dataframe(df, mapping):
+    # Create a dictionary to rename columns
+    rename_dict = {m.split('(')[0]: m.split('(')[1][:-1] for m in mapping}
+    # Extract and rename columns
+    df_processed = df[list(rename_dict.keys())].rename(columns=rename_dict)
+    return df_processed
 
-# Example usage with multiple dataframes
-dataframes = [df1, df2, df3, df4, df5, df6, df7]
-output_file = 'commodity.json'
-dataframes_to_json(dataframes, output_file)
+# List of DataFrames and their corresponding mappings
+dataframes = [df1, df2, df3, df4, df5, df6, df7, df8, df9, df10]
+mappings = [
+    ['id(column_id)', 'col B', 'col C', 'col D', 'col E', 'col F', 'col G'],
+    ['ids(column_id)', 'hexa_col(col B)', 'beta_col(col C)', 'other_col(col D)'],
+    # Add mappings for other dataframes
+]
 
-_vessel_inventory_df['vessel_market'] = _vessel_inventory_df['vessel_index'].str.split(pat='+',n=2).str[2]
+# Iterate Through Each DataFrame and Merge
+for df, mapping in zip(dataframes, mappings):
+    processed_df = process_dataframe(df, mapping)
+    final_df = final_df.merge(processed_df, on='column_id', how='outer')
+
+# Ensure Uniqueness
+final_df = final_df.drop_duplicates(subset='column_id')
+
+# Display the final dataframe
+print(final_df)
