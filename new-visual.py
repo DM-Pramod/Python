@@ -3,6 +3,7 @@ import pandas as pd
 def FN1(df):
     unique_lists = []
     mapping_dict = {}
+    df_mapped = df.copy()
     
     for column in df.columns:
         unique_values = df[column].unique()
@@ -11,24 +12,20 @@ def FN1(df):
         value_to_code = {value: code for code, value in enumerate(unique_values)}
         mapping_dict[column] = value_to_code
         
-        df[column] = df[column].map(value_to_code)
+        df_mapped[column] = df[column].map(value_to_code)
     
-    return unique_lists, mapping_dict
-
-
+    return unique_lists, mapping_dict, df_mapped
 import pandas as pd
 
-def FN2(mapped_dict, unique_lists):
+def FN2(mapped_dict, unique_lists, df_mapped):
     columns = list(mapped_dict.keys())
-    df_reconstructed = pd.DataFrame(columns=columns)
+    df_reconstructed = pd.DataFrame(index=df_mapped.index, columns=columns)
     
     for column, unique_values in zip(columns, unique_lists):
         code_to_value = {code: value for code, value in enumerate(unique_values)}
-        df_reconstructed[column] = df_reconstructed[column].map(code_to_value)
+        df_reconstructed[column] = df_mapped[column].map(code_to_value)
     
     return df_reconstructed
-
-
 # Example DataFrame
 data = {
     'A': [1, 2, 3, 1, 2],
@@ -40,7 +37,11 @@ data = {
 df1 = pd.DataFrame(data)
 
 # Function FN1
-unique_lists, mapping_dict = FN1(df1)
+unique_lists, mapping_dict, df_mapped = FN1(df1)
 
 # Function FN2
-df_reconstructed = FN2(mapping_dict, unique_lists)
+df_reconstructed = FN2(mapping_dict, unique_lists, df_mapped)
+
+# Check if the reconstructed DataFrame is the same as the original
+print(df1)
+print(df_reconstructed)
