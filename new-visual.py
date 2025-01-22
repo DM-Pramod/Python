@@ -1,31 +1,41 @@
 import pandas as pd
 
-# Initialize the Final DataFrame
-final_df = pd.DataFrame(columns=['column_id', 'col B', 'col C', 'col D', 'col E', 'col F', 'col G', 'col H', 'col I', 'col J'])
+def create_mapping_and_unique_lists(df):
+    unique_lists = []
+    mapping_dict = {}
+    
+    for col in df.columns:
+        unique_values = df[col].unique().tolist()
+        unique_lists.append(unique_values)
+        
+        # Create a mapping for the column
+        col_mapping = {value: code for code, value in enumerate(unique_values)}
+        mapping_dict[col] = col_mapping
+        
+        # Replace the original data with the codes
+        df[col] = df[col].map(col_mapping)
+    
+    return unique_lists, mapping_dict
 
-# Define the Function to Process Each DataFrame
-def process_dataframe(df, mapping):
-    # Create a dictionary to rename columns
-    rename_dict = {m.split('(')[0]: m.split('(')[1][:-1] for m in mapping}
-    # Extract and rename columns
-    df_processed = df[list(rename_dict.keys())].rename(columns=rename_dict)
-    return df_processed
+# Example usage
+data = {
+    'A': [1, 2, 3, 1],
+    'B': ['x', 'y', 'x', 'z'],
+    'C': [10.1, 10.2, 10.1, 10.3],
+    'D': ['a', 'b', 'a', 'c'],
+    'E': [True, False, True, True]
+}
 
-# List of DataFrames and their corresponding mappings
-dataframes = [df1, df2, df3, df4, df5, df6, df7, df8, df9, df10]
-mappings = [
-    ['id(column_id)', 'col B', 'col C', 'col D', 'col E', 'col F', 'col G'],
-    ['ids(column_id)', 'hexa_col(col B)', 'beta_col(col C)', 'other_col(col D)'],
-    # Add mappings for other dataframes
-]
+df1 = pd.DataFrame(data)
+unique_lists, mapping_dict = create_mapping_and_unique_lists(df1)
 
-# Iterate Through Each DataFrame and Merge
-for df, mapping in zip(dataframes, mappings):
-    processed_df = process_dataframe(df, mapping)
-    final_df = final_df.merge(processed_df, on='column_id', how='outer')
+print("Unique Lists:")
+for i, lst in enumerate(unique_lists):
+    print(f"Column {i+1}: {lst}")
 
-# Ensure Uniqueness
-final_df = final_df.drop_duplicates(subset='column_id')
+print("\nMapping Dictionary:")
+for col, mapping in mapping_dict.items():
+    print(f"Column {col}: {mapping}")
 
-# Display the final dataframe
-print(final_df)
+print("\nTransformed DataFrame:")
+print(df1)
