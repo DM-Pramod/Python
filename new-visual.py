@@ -1,8 +1,6 @@
 Use yfinance, streamlit and python and create a dashboard
-to the left side let there be a drop down which has all 195 countries 
-When selected a particular country It needs to pick top 1000 Cryptocurrencies which are developed in that country or originated and are very popular across.
-
-Once the 1000 Cryptos are taken create a table which has all the information related to them
+Fetch the most popular 500 cryptocurrencies across the world or atleast 100
+Once the 500 Cryptos are taken create a table which has all the information related to them
 Informations like 
 1. Current trading price and few other important trading data from yfinance some 6 columns related to that
 2. Purpose or pblm statement that particular crypto trying to solve
