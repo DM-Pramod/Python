@@ -1,16 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Node Details</title>
-</head>
-<body>
-    <p>Type: {{ type }}</p>
-    <p>Node ID: {{ node_id }}</p>
-    <p>f_i: {{ f_i }}</p>
-    <p>t_i: {{ t_i }}</p>
-    <p>Window Start: {{ window_start }}</p>
-    <p>Window End: {{ window_end }}</p>
-</body>
-</html>
+import nbformat
+from IPython import get_ipython
+
+def import_notebook(notebook_path):
+    with open(notebook_path, 'r', encoding='utf-8') as f:
+        notebook_content = nbformat.read(f, as_version=4)
+    
+    for cell in notebook_content.cells:
+        if cell.cell_type == 'code':
+            get_ipython().run_cell(cell.source)
+
+# Path to the notebook you want to import
+notebook_to_import = '../../A/notebook_to_import.ipynb'
+
+# Import the notebook
+import_notebook(notebook_to_import)
